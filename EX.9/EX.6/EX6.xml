@@ -1,0 +1,28 @@
+PigProject/
+├── students.txt        # Input file
+├── pig_filter_script.pig   # Pig script
+
+
+File:students.txt (Sample Input)
+
+101,Raja,95
+102,Pooja,85
+103,Roja,75
+104,Ram,65
+
+File: pig_filter_script.pig
+
+students = LOAD 'students.txt' USING PigStorage(',') 
+           AS (rollno:int, name:chararray, mark:int);
+
+high_scorers = FILTER students BY mark > 80;
+
+DUMP high_scorers;
+
+HDFS COMMANDS TO RUN:
+
+hdfs dfs -mkdir /pigproject
+hdfs dfs -put students.txt /pigproject
+
+RUN PIG SCRIPT:
+pig -x mapreduce pig_filter_script.pig

@@ -1,0 +1,40 @@
+HiveProject/
+├── employee_data.txt           # Input data file
+├── hive_employee_script.hql    # HiveQL script
+
+File : employee_data.txt
+
+101,Raja,HR,25000
+102,Pooja,IT,40000
+103,Ram,IT,30000
+104,Roja,HR,22000
+105,Siva,IT,50000
+
+File : HiveQL SCRIPT (hive_employee_script.hql)
+
+-- Create a database (optional)
+CREATE DATABASE IF NOT EXISTS company;
+-- Use the database
+USE company;
+-- Create table
+CREATE TABLE IF NOT EXISTS employee (
+    id INT,
+    name STRING,
+    dept STRING,
+    salary INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+-- Load data
+LOAD DATA LOCAL INPATH 'employee_data.txt' INTO TABLE employee;
+-- Query: Show all records
+SELECT * FROM employee;
+-- Query: Find average salary per department
+SELECT dept, AVG(salary) as avg_salary FROM employee GROUP BY dept;
+-- Query: Highest salary employee
+SELECT * FROM employee ORDER BY salary DESC LIMIT 1;
+
+TO EXECUTE SCRIPT:
+
+hive -f hive_employee_script.hql
